@@ -37,6 +37,15 @@ $ docker run –dit -p 8080:80 -v /hostdir/:/dockerdir
 $ docker attach
 $ docker exec -it <container name> <command to excute inside the container> 
 ```
+
+## Install a webserver using docker
+```
+$ docker run -dit --name boc-web -p 80:80 -v /home/pnayak/wordpress/:/var/www/html centos/httpd
+-d option is for detached mode
+-i interactive
+-t is for terminal
+
+```
 ## Docker-compose commands
 
 ```
