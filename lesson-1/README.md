@@ -46,6 +46,20 @@ $ docker run -dit --name boc-web -p 80:80 -v /home/pnayak/wordpress/:/var/www/ht
 -t is for terminal
 
 ```
+## install docker compose on CentOS
+```
+$ sudo curl -L "https://github.com/docker/compose/releases/download/1.28.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+$ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+$ docker-compose --version
+
+Next step : Prepare the docker-compose.yml configuration file, you can download the docker-compose-yml file from this repository, this is a smaple configuration for install and running wordpress, this docker compose installes and run 2 docker containers.
+
+1.latest mysql docker container 
+2.latest wordpress server 
+
+Wordpress serer is basically a webserver and the wordpress code already installed for you and packaged in a single docker container.
+```
 ## Docker-compose commands
 
 ```
