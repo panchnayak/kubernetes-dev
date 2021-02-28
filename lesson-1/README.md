@@ -28,8 +28,8 @@ $ docker exec -it <container name> <command to excute inside the container> 
 ```
 # Docker-compose commands
 
-The following command runs your wordpress site in detached mode, pulls the needed Docker images from dockerhub , and starts the wordpress and database containers.
 ```
+The following command runs your wordpress site in detached mode, pulls the needed Docker images from dockerhub , and starts the wordpress and database containers.
 $ docker-compose up -d
 
 $ docker-compose down
