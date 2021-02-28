@@ -12,6 +12,13 @@ Log into your machine as a user with sudo or root privileges.
 $ ssh username@IP-ADDRESS-OF-VM 
 $ sudo yum update -y
 $ curl -sSL https://get.docker.com | bash
+
+Add a non-root user to the "docker" group, by doing this you grant the user the ability to run containers which can be used to obtain root privileges on the docker host.
+
+$ sudo usermod -aG docker "your-user-name"
+
+Then logout and login again so that the user gets the required access to run the docker containers.
+
 ```
 
 ## Docker commands reference
