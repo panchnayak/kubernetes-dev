@@ -1,3 +1,5 @@
+## Lesson-1 - Container Basics
+
 ## Install Docker on CentOS
 
 Log into your machine as a user with sudo or root privileges.
@@ -10,8 +12,6 @@ $ curl -sSL https://get.docker.com | bash
 #### Installing Docker on your Laptop
 
 A step by step instruction will be followed aftr the live session
-
-## Lesson-1 - Container Basics
 
 ## Docker commands reference
 ```
