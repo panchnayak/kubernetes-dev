@@ -4,7 +4,7 @@ A step by step instruction will be followed aftr the live session
 
 ## Lesson-1 - Container Basics
 
-## Docker commdands reference
+## Docker commands reference
 
 ### $ docker ps
 ### $ docker container ls
