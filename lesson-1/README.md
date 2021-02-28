@@ -1,4 +1,4 @@
-## Lesson-1 - Container Basics
+# Lesson-1 - Container Basics
 
 ## Install Docker on CentOS
 
@@ -26,7 +26,7 @@ $ docker run –dit -p 8080:80 -v v /hostdir/:/dockerdir
 $ docker attach
 $ docker exec -it <container name> <command to excute inside the container> 
 ```
-# Docker-compose commands
+## Docker-compose commands
 
 ```
 The following command runs your wordpress site in detached mode, pulls the needed Docker images from dockerhub , and starts the wordpress and database containers.
