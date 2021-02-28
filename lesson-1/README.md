@@ -17,12 +17,14 @@ Add a non-root user to the "docker" group, by doing this you grant the user the 
 
 $ sudo usermod -aG docker "your-user-name"
 
+Now start the docker demon by starting and enabling the docker system service
+
+$ sudo systemctl enable docker --now
+
 Then logout and login again so that the user gets the required access to run the docker containers.
 
 ```
-
 ## Docker commands reference
-
 ```
 $ docker ps
 $ docker container ls
@@ -31,7 +33,7 @@ $ docker images
 $ docker stop
 $ docker rm
 $ docker rmi
-$ docker run –dit -p 8080:80 -v v /hostdir/:/dockerdir
+$ docker run –dit -p 8080:80 -v /hostdir/:/dockerdir
 $ docker attach
 $ docker exec -it <container name> <command to excute inside the container> 
 ```
