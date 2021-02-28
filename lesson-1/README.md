@@ -4,9 +4,9 @@
 
 Install VirtualBox on your Laptop, and then create a VM using VirtualBox, install CentOS 7 on the VM.
 
-```
 ### Install Docker on CentOS on your Laptop
 
+```
 Log into your machine as a user with sudo or root privileges.
 
 $ ssh username@IP-ADDRESS-OF-VM 
