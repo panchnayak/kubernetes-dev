@@ -1,4 +1,26 @@
-## Deploy Kubbernets Cluster on Your Own Laptop or Desktop
+### Start a Single Node Kubernetes Cluster on your laptop (Minikube)
+
+```
+Install VirtualBox on your laptop
+Then install minikube on laptop
+Download the windows minikube installer from here https://storage.googleapis.com/minikube/releases/latest/minikube-installer.exe
+Install minikube
+
+Start minikube
+
+Set the default Driver to VirtualBox
+
+# minikube config set driver virtualbox
+
+$ minikube start --driver=virtualbox
+
+or 
+
+$ minikube start --cpus 2 --memory 4096
+
+```
+
+## Deploy Multinode Kubbernets Cluster on Your Own Laptop or Desktop
 
 This Section of the Course teaches you to deploy a multi node Kubbernets Cluster on your Own Laptop or Desktop
 Here we'll deploy a 3 Node Cluster, one Master Node and 2 Worker Nodes
