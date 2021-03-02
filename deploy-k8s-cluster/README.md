@@ -152,3 +152,12 @@ This node has joined the cluster:
 Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
 
 ```
+
+### Helm Chart
+```
+Install Helm, then Intialize the repo
+
+$ helm repo add stable https://charts.helm.sh/stable
+
+$ helm search repo stable
+
