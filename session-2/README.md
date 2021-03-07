@@ -28,3 +28,27 @@ This command stops the containers removes the default network, but preserves you
 $ docker-compose down --volumes 
 The above command removes the containers, default network, and the WordPress database.
 ```
+
+### Install Local Docker Registry on CentOS 7
+
+```
+
+$ sudo yum update -y
+$ sudo yum -y install docker-distribution
+$ sudo systemctl enable docker-distribution
+
+Check the Status if the service is loaded
+
+$ sudo systemctl status docker-distribution
+
+Docker registry by default runs on port 5000
+
+Add the Registry Server to Docker Enginee, edit /etc/docker/daemon.json 
+
+$ sudo vi /etc/docker/daemon.json
+
+Add the following line
+{
+ "insecure-registries" : ["bn-cr.local:5000"]
+}
+```
