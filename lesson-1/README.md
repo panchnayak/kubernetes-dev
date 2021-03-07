@@ -15,7 +15,7 @@ $ curl -sSL https://get.docker.com | bash
 
 Add a non-root user to the "docker" group, by doing this you grant the user the ability to run containers which can be used to obtain root privileges on the docker host.
 
-$ sudo usermod -aG docker "your-user-name"
+$ sudo usermod -aG docker $USER
 
 Now start the docker demon by starting and enabling the docker system service
 
