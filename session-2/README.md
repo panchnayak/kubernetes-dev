@@ -51,4 +51,7 @@ Add the following line
 {
  "insecure-registries" : ["bn-cr.local:5000"]
 }
+
+$ sudo systemctl restart docker-distribution
+
 ```
