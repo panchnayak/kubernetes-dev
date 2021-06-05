@@ -1,5 +1,5 @@
 
-Clone this repo to your home directory
+# Clone this repo to your home directory
 
 cd /kubernetes-dev/session-3/
 
@@ -72,8 +72,19 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 Get the token by the following command
 
 $ kubectl -n kube-system describe secret default
+  
+# Install Opensource Dashboard named Octant
+  
+On your macbook you can use 
+  
+#brew install octant
+After successfully install octant just run it with 
+  
+$./octant
+  
+This will automatically take the kubernetes config file located at ~/.kube/config and open the browser with the kubaernetes cluster dashboard
 
-Install MetalLB LoadBalancer for the Kubernetes Cluster.
+# Install MetalLB LoadBalancer for the Kubernetes Cluster.
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
@@ -83,7 +94,7 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 $ kubectl get pods -n metallb-system
 $ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.6/manifests/example-layer2-config.yaml
 
-Its time to test the Load Balancer
+# Its time to test the Load Balancer
   
 $ kubectl apply -f nginx-deploy.yaml 
 $ kubectl apply -f nginx-service.yaml 
