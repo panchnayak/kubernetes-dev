@@ -1,6 +1,7 @@
-cd /home/pnayak/k8s
 
-clone this repo
+Clone this repo to your home directory
+
+cd /home/pnayak/
 
 Edit the Vagrantfile based on your LAN network IP, if you are in your home network, mostlikely it ll be either 192.168.1.0 or 192.168.0.0, so edit the following based on your network and number of nodes required.
 
