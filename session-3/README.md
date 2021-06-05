@@ -78,8 +78,23 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manife
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
 # On first install only
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+  
+$ kubectl get pods -n metallb-system
+$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.6/manifests/example-layer2-config.yaml
 
 Its time to test the Load Balancer
+  
+$ kubectl apply -f nginx-deploy.yaml 
+$ kubectl apply -f nginx-service.yaml 
+$ kubectl get services
+  
+  MacBook-Pro:k8s pnayak$ kubectl get services
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
+kubernetes      ClusterIP      10.96.0.1       <none>          443/TCP        37m
+ngnix-service   LoadBalancer   10.103.190.81   192.168.1.240   80:32150/TCP   8s
+  
+Now opn your browser and try to access the nginx webserver using http://192.168.1.240:80 and you should get the homepage of NGINX webserver
+
 
   
   
