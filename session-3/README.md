@@ -88,9 +88,11 @@ On your macbook you can use
 #brew install octant
 After successfully install octant just run it with 
   
-$./octant
+$octant
   
 This will automatically take the kubernetes config file located at ~/.kube/config and open the browser with the kubaernetes cluster dashboard
+
+![image](https://github.com/panchnayak/kubernetes-dev/blob/24cd08bde3e792925fa8c0f783226c33a08ed037/session-3/octant.jpg)
 
 # Install MetalLB LoadBalancer for the Kubernetes Cluster.
 
