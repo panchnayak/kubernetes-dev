@@ -32,7 +32,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl cluster-info
 kubectl get nodes
 
-is should appear as the following
+It should appear as the following
 
 vagrant@master:~$ kubectl get nodes
 NAME     STATUS   ROLES                  AGE     VERSION
