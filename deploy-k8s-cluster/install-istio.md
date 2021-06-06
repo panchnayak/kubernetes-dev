@@ -1,1 +1,1 @@
-## Installing ISTI Service Mesh on your Cluster
+## Installing Istio "Service Mesh" on your Kubernetes Cluster
