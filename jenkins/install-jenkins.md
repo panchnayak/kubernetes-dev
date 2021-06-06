@@ -3,7 +3,7 @@
 ```
 
 $ kubectl apply -f jenkins-namespace.yaml
-$ kubectl apply -f jenkins-volume.yaml
+$ kubectl apply -f jenkins-vol.yaml
 
 $ helm repo add jenkins https://charts.jenkins.io
 $ helm repo update
