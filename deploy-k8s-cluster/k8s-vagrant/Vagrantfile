@@ -1,12 +1,14 @@
-BOX_IMAGE    = "ubuntu/xenial64"
+BOX_IMAGE    = "ubuntu/focal64"
 MASTER_COUNT = 1
-NODE_COUNT   = 3
+NODE_COUNT   = 2
 MASTER_IP    = "192.168.1.10"
 MASTER_PORT  = "8443"
+MASTER_DNS   = "bigoc.ddns.net"
 NODE_IP_NW   = "192.168.1."
 POD_NW_CIDR  = "10.244.0.0/16"
 
-DOCKER_VER = "5:19.03.4~3-0~ubuntu-xenial"
+#DOCKER_VER = "5:19.03.4~3-0~ubuntu-xenial"
+DOCKER_VER = "5:20.10.6~3-0~ubuntu-focal"
 KUBE_VER   = "1.21.0"
 KUBE_TOKEN = "ayngk7.m1555duk5x2i3ctt"
 IMAGE_REPO = "k8s.gcr.io"
@@ -40,9 +42,9 @@ add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-apt-get update && apt-get install -y docker-ce=#{DOCKER_VER}
+apt-get update && apt-get install net-tools -y && apt-get install -y docker-ce=#{DOCKER_VER}
 
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - 
 cat > /etc/apt/sources.list.d/kubernetes.list <<EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
@@ -71,7 +73,7 @@ set -eo pipefail
 
 discovery_token_ca_cert_hash="$(grep 'discovery-token-ca-cert-hash' /vagrant/kubeadm.log | head -n1 | awk '{print $2}')"
 kubeadm reset -f
-kubeadm join #{MASTER_IP}:#{MASTER_PORT} --token #{KUBE_TOKEN} --discovery-token-ca-cert-hash ${discovery_token_ca_cert_hash}
+kubeadm join #{MASTER_DNS}:#{MASTER_PORT} --token #{KUBE_TOKEN} --discovery-token-ca-cert-hash ${discovery_token_ca_cert_hash}
 SCRIPT
 
 master_script = <<SCRIPT
@@ -81,7 +83,7 @@ set -eo pipefail
 
 kubeadm reset -f
 kubeadm init --image-repository #{IMAGE_REPO} \
-             --apiserver-advertise-address=#{MASTER_IP} \
+             --control-plane-endpoint=#{MASTER_DNS} \
              --apiserver-bind-port=#{MASTER_PORT} \
              --kubernetes-version v#{KUBE_VER} \
              --pod-network-cidr=#{POD_NW_CIDR} \
@@ -89,10 +91,21 @@ kubeadm init --image-repository #{IMAGE_REPO} \
              --token-ttl 0 | tee /vagrant/kubeadm.log
 
 mkdir -p $HOME/.kube
+cp -Rf /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f /vagrant/kube-flannel.yml
+apt-get install wget -y
+wget https://github.com/vmware-tanzu/octant/releases/download/v0.20.0/octant_0.20.0_Linux-64bit.deb
+dpkg -i octant_0.20.0_Linux-64bit.deb
+rm octant_0.20.0_Linux-64bit.deb
+
+sudo su - vagrant
+mkdir -p $HOME/.kube
 sudo cp -Rf /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+octant --listener-addr 0.0.0.0:7777 --disable-open-browser &
+logout
 
-kubectl apply -f /vagrant/kube-flannel.yml
 SCRIPT
 
 ha_script = <<SCRIPT
@@ -103,6 +116,7 @@ set -eo pipefail
 status() {
     echo -e "\033[35m >>>   $*\033[0;39m"
 }
+
 status "configuring haproxy and keepalived.."
 apt-get install -y keepalived haproxy
 
@@ -147,6 +161,7 @@ vrrp_instance VI_1 {
     }
 }
 EOF
+
 cat > /etc/keepalived/check_apiserver.sh <<EOF
 #!/bin/bash
 
@@ -227,7 +242,7 @@ EOF
   mkdir -p $HOME/.kube
   sudo cp -Rf /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
+  
   status "installing flannel network addon.."
   kubectl apply -f /vagrant/kube-flannel.yml
 else
@@ -235,7 +250,7 @@ else
   discovery_token_ca_cert_hash="$(grep 'discovery-token-ca-cert-hash' /vagrant/kubeadm.log | head -n1 | awk '{print $2}')"
   certificate_key="$(grep 'certificate-key' /vagrant/kubeadm.log | head -n1 | awk '{print $3}')"
   kubeadm reset -f
-  kubeadm join #{MASTER_IP}:#{MASTER_PORT} --token #{KUBE_TOKEN} \
+  kubeadm join #{MASTER_DNS}:#{MASTER_PORT} --token #{KUBE_TOKEN} \
     --discovery-token-ca-cert-hash ${discovery_token_ca_cert_hash} \
     --control-plane --certificate-key ${certificate_key} \
     --apiserver-advertise-address ${vrrp_ip}
@@ -248,7 +263,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |l|
     l.cpus = 2
-    l.memory = "4096"
+    l.memory = "8192"
   end
 
   config.vm.provision :shell, inline: init_script
@@ -261,10 +276,19 @@ Vagrant.configure("2") do |config|
     hostname= "master#{ha ? i: ''}"
     config.vm.define(hostname) do |subconfig|
       subconfig.vm.hostname = hostname
-      subconfig.vm.network :public_network, nic_type: "virtio", ip: ha ? NODE_IP_NW + "#{i + 10}" : MASTER_IP
+      subconfig.vm.network :public_network, bridge: "en0: Wi-Fi (Wireless)", nic_type: "virtio", ip: ha ? NODE_IP_NW + "#{i + 10}" : MASTER_IP
+      #default router
+      subconfig.vm.provision "shell",
+      run: "always",
+      inline: "route add default gw 192.168.1.1"
+      # delete default gw on eth0
+      subconfig.vm.provision "shell",
+      run: "always",
+      inline: "eval `route -n | awk '{ if ($8 ==\"eth0\" && $2 != \"0.0.0.0\") print \"route del default gw \" $2; }'`"
+
       subconfig.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--cpus", "2"]
-        vb.customize ["modifyvm", :id, "--memory", "4096"]
+        vb.customize ["modifyvm", :id, "--memory", "8192"]
       end
       subconfig.vm.provision :shell, inline: ha ? ha_script : master_script
     end
@@ -273,8 +297,18 @@ Vagrant.configure("2") do |config|
   (1..NODE_COUNT).each do |i|
     config.vm.define("node#{i}") do |subconfig|
       subconfig.vm.hostname = "node#{i}"
-      subconfig.vm.network :public_network, nic_type: "virtio", ip: NODE_IP_NW + "#{i + 20}"
+      subconfig.vm.network :public_network, bridge: "en0: Wi-Fi (Wireless)", nic_type: "virtio", ip: NODE_IP_NW + "#{i + 20}"
+      #default router 
+      subconfig.vm.provision "shell",
+      run: "always",
+      inline: "route add default gw 192.168.1.1"
+      # delete default gw on eth0
+      subconfig.vm.provision "shell",
+      run: "always",
+      inline: "eval `route -n | awk '{ if ($8 ==\"eth0\" && $2 != \"0.0.0.0\") print \"route del default gw \" $2; }'`"
+
       subconfig.vm.provision :shell, inline: node_script
     end
   end
 end
+
