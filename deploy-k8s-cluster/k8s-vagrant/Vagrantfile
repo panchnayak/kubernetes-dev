@@ -104,7 +104,7 @@ mkdir -p $HOME/.kube
 sudo cp -Rf /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 octant --listener-addr 0.0.0.0:7777 --disable-open-browser &
-logout
+exit
 
 SCRIPT
 
