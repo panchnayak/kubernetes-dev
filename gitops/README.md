@@ -1,4 +1,6 @@
-Tekton
+## Tekton
+
+```bash
 
 $ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 
@@ -16,17 +18,22 @@ $ kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest
 
 $ kubectl proxy --port=8080
 
-Access the dashboard
+```
+
+### Access the dashboard
 
 http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/
 
 
-ArgoCD
+### ArgoCD
+
+```bash
 
 $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 $ kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2
 $ kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
 
+###Octant
 
-Octant
 ![image](https://user-images.githubusercontent.com/31803506/120935336-48b12c00-c6d0-11eb-91f1-5b2e930fecf7.png)
