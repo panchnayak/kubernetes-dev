@@ -24,7 +24,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 Install argocd CLI and login using argocd cli
 ```bash
-argocd login "argocd server iP or domainame"
+argocd login "argocd server IP or domainame"
 ```
 Change the password
 
