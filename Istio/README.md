@@ -42,13 +42,14 @@ Execute the following command to determine if your Kubernetes cluster is running
 ```
 kubectl get svc istio-ingressgateway -n istio-system
 ```
-### Follow these instructions if your environment does not have an external load balancer and choose a node port instead.
-```
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
-export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
-export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
+### Follow these instructions if you have determined that your environment has an external load balancer.
 ```
 
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+
+```
 ### Set GATEWAY_URL:
 ```
 export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
