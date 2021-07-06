@@ -55,7 +55,8 @@ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressga
 export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 echo "http://$GATEWAY_URL/productpage"
 ```
-http://192.168.26.21:30601/productpage
+http://192.168.1.151:80/productpage
+
 View the Istio Dashboard
 ```
 kubectl apply -f samples/addons
