@@ -1,15 +1,26 @@
 ## Install Istio on Kubernetes Cluster
 
 
+```bash
+
+You can download and install on your linux system
+
+curl -L https://istio.io/downloadIstio | sh - 
+
+then setup the PATH as follows
+
+export PATH="$PATH:/Users/pnayak/k8s/k8s-vagrant/istio-1.10.2/bin"
 ```
+If you are on Macbook then you can install using brew
 
-$ curl -L https://istio.io/downloadIstio | sh -
-$ istioctl install --set profile=demo -y
-$ kubectl label namespace default istio-injection=enabled
+```bash
 
-$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
-$ kubectl get services
-
+brew install istioctl
+istioctl install --set profile=demo -y
+kubectl label namespace default istio-injection=enabled
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl get services
+```
 
 Verify application
 
