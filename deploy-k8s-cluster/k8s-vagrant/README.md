@@ -10,9 +10,9 @@ If you choose to run the cluster in your home LAN network.
 Edit the Vagrantfile based on your LAN network IP, if you are in your home network, most likely it ll be either 192.168.1.0 or 192.168.0.0, so edit the following based on your network and number of nodes required.Choose the Kubernates Master VM IPS address and change the network IP address too.
 
 ```
-cd /kubernetes-dev/k8s-vagrant/
+$cd /kubernetes-dev/k8s-vagrant/
 
-vi Vagrantfile
+$ vi Vagrantfile
 
 MASTER_COUNT = 1
 NODE_COUNT   = 2
@@ -20,7 +20,8 @@ MASTER_IP    = "192.168.1.10"
 MASTER_PORT  = "8443"
 NODE_IP_NW   = "192.168.1."
 
-$ vagrant up
+$vagrant plugin install vagrant-hostmanager
+$vagrant up
 
 ```
 It ll ask which the following, I am creating the VMs with a public network,instaed of private network, so that I can connect a LaodBalancer to my kubernetes Cluster
