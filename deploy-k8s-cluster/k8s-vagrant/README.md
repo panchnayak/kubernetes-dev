@@ -1,6 +1,6 @@
 ## Deploy Kubernates Clouster on your laptop using vagrant
 
-# Clone this repo to your home directory
+### Clone this repo to your home directory
 
 You can either choose the private networking or public networking between the kubernetes Hos VMs.
 
