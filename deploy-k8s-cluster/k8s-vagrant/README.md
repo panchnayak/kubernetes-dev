@@ -19,7 +19,10 @@ NODE_COUNT   = 2
 MASTER_IP    = "192.168.1.10"
 MASTER_PORT  = "8443"
 NODE_IP_NW   = "192.168.1."
+```
+### Install vagrant plugins for VirtualBox
 
+```
 $vagrant plugin install vagrant-hostmanager
 $vagrant plugin install vagrant-vbguest
 $vagrant up
