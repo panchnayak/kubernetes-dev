@@ -21,6 +21,7 @@ MASTER_PORT  = "8443"
 NODE_IP_NW   = "192.168.1."
 
 $vagrant plugin install vagrant-hostmanager
+$vagrant plugin install vagrant-vbguest
 $vagrant up
 
 ```
