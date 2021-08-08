@@ -2,7 +2,7 @@
 
 ### Clone this repo to your home directory
 
-You can either choose the private networking or public networking between the kubernetes Hos VMs.
+You can either choose the private networking or public networking between the kubernetes Host VMs.
 
 If you want to choose private networking then the vagrant file will create/choose the hostonly network from your VirtualBox networks.
 If you choose to run the cluster in your home LAN network.
@@ -28,11 +28,7 @@ $vagrant plugin install vagrant-vbguest
 $vagrant up
 
 ```
-It ll ask which the following, I am creating the VMs with a public network,instaed of private network, so that I can connect a LaodBalancer to my kubernetes Cluster
-
-"master: Which interface should the network bridge to?" This question will be repeated for all your nodes.
-
-Select which interface is connected to your home router for internet connection.
+If you run the Vagrantfile without editing it ll creatre 3 VMs in your HomeNetwork which is public.
 
 After successfully creting the cluster login to the Master node and test the kubernetes clusrer functionality by excuting the following.
 
